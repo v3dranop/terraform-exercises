@@ -8,7 +8,7 @@
 module.exports = {
   ci: {
     collect: {
-      url: 'https://sf.feature.dev.shop.hessnatur.tech/de/funktionsshirt-aus-bio-merinowolle-mit-seide/p/499828834',
+      url: 'testlink',
       numberOfRuns: 1,
           },
     assert: {

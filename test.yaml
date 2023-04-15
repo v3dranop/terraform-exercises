@@ -1,0 +1,56 @@
+steps:
+  - name: 'eu.gcr.io/hess-webshop-dev-760c/hna-lighthouse-base'
+    id: build lhci
+    script: |
+      cd test/lighthouseci
+      npm install
+      npm install -g @lhci/cli@0.11.x
+      lhci autorun      
+timeout: 4000s
+
+# Use image according to your project requirements 
+image: cypress/browsers:node14.15.0-chrome86-ff82  
+build:
+  script:
+    - npm install
+    - npm run build
+    - npm install -g @lhci/cli@0.11.x
+    - lhci autorun 
+
+steps:
+  - name: 'eu.gcr.io/hess-webshop-dev-760c/hna-lighthouse-base'
+    id: build lhci
+    script: |
+      cd test/lighthouseci
+      npm install
+      npm run build
+      npm install -g @lhci/cli@0.11.x
+      lhci autorun      
+timeout: 4000s
+
+name: CI
+on: [push]
+jobs:
+  lhci:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: npm install, build
+        run: |
+          npm install
+          npm run build
+      - name: run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli@0.11.x
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+          https://hess-webshop-dev-760c-lhci-server-iozx2yblkq-ey.a.run.app

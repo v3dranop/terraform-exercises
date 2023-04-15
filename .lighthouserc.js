@@ -1,27 +1,47 @@
-/**
- * @license Copyright 2019 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
- */
-'use strict';
-
 module.exports = {
   ci: {
     collect: {
-      url: 'testlink',
+      url: ['https://sf.feature.dev.shop.hessnatur.tech/de/outdoor'],
       numberOfRuns: 1,
-          },
+      settings: {
+        chromeFlags: '--no-sandbox',
+        throttling: {
+          // Network throttling settings
+          rttMs: 150, // Round-trip time in milliseconds
+          throughputKbps: 1638.4, // Network throughput in kilobits per second
+          cpuSlowdownMultiplier: 1 // CPU slowdown multiplier
+        },
+      },
+    },
     assert: {
       assertions: {
-        'categories:performance': ['warn', {minScore: 0.3}],
-        'categories:accessibility': ['error', {minScore: 0.3}]
-            }
-          },
-
+        'categories:performance': [
+          'error',
+          { minScore: 0.3, aggregationMethod: 'median-run' },
+        ],
+        'categories:accessibility': [
+          'error',
+          { minScore: 0.3, aggregationMethod: 'pessimistic' },
+        ],
+        'categories:best-practices': [
+          'error',
+          { minScore: 0.3, aggregationMethod: 'pessimistic' },
+        ],
+        'categories:seo': [
+          'error',
+          { minScore: 0.3, aggregationMethod: 'pessimistic' },
+        ],
+      },
+    },
     upload: {
       target: 'lhci',
-      serverBaseUrl: 'https://voprun3-hs2ja3xnsa-ue.a.run.app',
-      token: '032be305-85b3-4c3a-bcc8-c1c29e78ed11', // could also use LHCI_TOKEN variable instead
+      serverBaseUrl: 'https://hess-webshop-dev-760c-lhci-server-iozx2yblkq-ey.a.run.app', // lhci server url
+      token: '43c78ec2-1cf8-48a8-87c4-f92b910d2685', //lhci server build admin token
+      ignoreDuplicateBuildFailure: true,
+      basicAuth: {
+        username: "lhci_server_user",
+        password: "BNsxdcOxp2wD6f5x"
+      }
     },
   },
 };
